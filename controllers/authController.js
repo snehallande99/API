@@ -1,4 +1,4 @@
-const bcrypt= require('bcrypt')
+// const bcrypt= require('bcrypt')
 const User=require("../Models/userModel")
 const Channel = require('../Models/channelmodel')
 
@@ -50,18 +50,19 @@ const loginController=async (req,res)=>{
         }
         else{
           
-            const isMathch=await bcrypt.compare(req.body.password,userdata.password)
-            console.log(userdata.password)
-            console.log(isMathch)
-            if(!isMathch)
+            // const isMathch=await bcrypt.compare(req.body.password,userdata.password)
+            // console.log(userdata.password)
+            // console.log(isMathch)
+            if(req.body.password==userdata.password)
             {
-                res.send("Invalid user details")    
-            }
-            else{
                 const channelDetail=await Channel.findOne({name:userdata.channel})
                 const token =await userdata.generateToken();
                 console.log(token)
                 res.status(200).send({success:true,message:"login successful",token:token,user_id:userdata._id,channel_id:channelDetail._id})
+            }
+            else{
+                 res.send("Invalid user details")    
+               
             }
         }
 
